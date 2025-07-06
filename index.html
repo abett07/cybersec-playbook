@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CyberSec Playbook</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<a href="resume.html" class="resume-btn" target="_blank">📄 View My Resume</a>
+<div id="terminal">
+  <div id="terminal-output">
+    <div class="line" id="datetime"></div>
+    <p class="typing-effect">Welcome to <strong>CyberSec Playbook</strong> [Version 0.1]</p>
+    <p>Type <span class="cmd">'help'</span> to see available commands.</p>
+    <br>
+  </div>
+  <div class="terminal-input">
+    <span class="prompt">> </span>
+    <input type="text" id="input-line" placeholder="Type a command..." /> />
+  </div>
+</div>
+
+<!-- News ticker below -->
+<div id="news-ticker">
+  <span id="news-text">Loading cybersecurity headlines...</span>
+</div>
+
+<div id="cyber-tip-box">
+  <div id="cyber-tip-title">💡 Cybersecurity Tip</div>
+  <div id="cyber-tip-content">Loading tips...</div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
