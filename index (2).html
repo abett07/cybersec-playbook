@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abett Reddy | Cybersecurity Portfolio</title>
+<meta name="description" content="Incident Response Analyst | Digital Forensics | SOC Operations — Cybersecurity portfolio of Abett Reddy">
+<meta name="theme-color" content="#0a0e0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g: #00ff41;
+  --g-dim: #0a3a0a;
+  --g-mid: #5a8a5a;
+  --g-soft: #8aff8a;
+  --cyan: #00e5ff;
+  --amber: #ffb300;
+  --red: #ff1744;
+  --magenta: #e040fb;
+  --bg: #0a0e0a;
+  --panel: rgba(0,255,65,0.025);
+  --border: rgba(0,255,65,0.12);
+  --border-h: rgba(0,255,65,0.3);
+  --font-display: 'Orbitron', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Share Tech Mono', monospace;
+  --font-body: 'Share Tech Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--g-soft);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+a { color: var(--cyan); text-decoration: none; transition: all 0.2s; }
+a:hover { color: #fff; text-shadow: 0 0 8px var(--cyan); }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(0,255,65,0.2); border-radius: 4px; }
+::selection { background: rgba(0,255,65,0.3); color: #fff; }
+
+/* ── Scanlines ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
+  pointer-events: none; z-index: 10000;
+}
+
+/* ── Matrix Canvas ── */
+#matrix-bg { position: fixed; inset: 0; z-index: 0; opacity: 0.07; pointer-events: none; }
+
+/* ── News Ticker ── */
+.ticker-wrap {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: linear-gradient(90deg, rgba(0,0,0,0.95), rgba(10,14,10,0.95));
+  border-top: 1px solid var(--border);
+  height: 32px; overflow: hidden;
+  display: flex; align-items: center;
+}
+.ticker-label {
+  background: var(--red);
+  color: #fff; font-family: var(--font-display);
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  padding: 4px 14px; white-space: nowrap;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  animation: pulse-label 2s infinite;
+}
+@keyframes pulse-label { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+.ticker-track {
+  display: flex; animation: scroll-ticker 90s linear infinite;
+  white-space: nowrap;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--g-mid); padding: 0 40px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ticker-item .ti-tag {
+  font-size: 8px; padding: 1px 6px; border-radius: 2px;
+  font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+}
+.ti-crit { background: rgba(255,23,68,0.2); color: var(--red); border: 1px solid rgba(255,23,68,0.3); }
+.ti-warn { background: rgba(255,179,0,0.15); color: var(--amber); border: 1px solid rgba(255,179,0,0.2); }
+.ti-info { background: rgba(0,229,255,0.12); color: var(--cyan); border: 1px solid rgba(0,229,255,0.2); }
+@keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 500;
+  background: rgba(10,14,10,0.88);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.logo-hex {
+  width: 36px; height: 36px; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-hex::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--g); clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  opacity: 0.15;
+}
+.logo-hex span { font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--g); z-index: 1; }
+.logo-text {
+  font-family: var(--font-display); font-size: 15px;
+  font-weight: 700; letter-spacing: 4px; color: var(--g);
+  text-shadow: 0 0 12px rgba(0,255,65,0.2);
+}
+.logo-sub { font-size: 9px; color: var(--g-mid); letter-spacing: 1px; margin-top: 1px; }
+.clock-box {
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--g-mid); text-align: right;
+}
+.clock-time { font-size: 16px; color: var(--g); font-weight: 700; letter-spacing: 2px; }
+
+/* ── Nav ── */
+.nav-bar {
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 56px; z-index: 499;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 20px;
+  display: flex; gap: 0; overflow-x: auto;
+}
+.nav-btn {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--g-mid); font-family: var(--font-mono); font-size: 11px;
+  padding: 10px 18px; cursor: pointer; white-space: nowrap;
+  letter-spacing: 1px; transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:hover { color: var(--g); background: rgba(0,255,65,0.03); }
+.nav-btn.active { color: var(--g); border-bottom-color: var(--g); background: rgba(0,255,65,0.05); }
+.nav-key {
+  font-size: 8px; border: 1px solid var(--border);
+  padding: 1px 4px; border-radius: 2px; opacity: 0.5;
+}
+
+/* ── Layout ── */
+.main-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 20px 20px 60px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  position: relative; z-index: 1;
+}
+.content-area { min-width: 0; }
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── Panels ── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.panel:hover { border-color: var(--border-h); }
+.panel-head {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent);
+}
+.panel-icon { font-size: 13px; }
+.panel-title {
+  font-family: var(--font-display); font-size: 11px;
+  font-weight: 700; letter-spacing: 2px;
+}
+.panel-body { padding: 16px; }
+
+/* ── Section: hidden/visible ── */
+.section { display: none; animation: fadeSlide 0.4s ease; }
+.section.active { display: block; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Status Bar ── */
+.status-bar {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  padding: 8px 14px; margin-bottom: 20px;
+  background: rgba(0,255,65,0.02);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 11px; color: var(--g-mid);
+}
+.status-bar span b { font-weight: 500; }
+
+/* ── Profile grid ── */
+.profile-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px 20px; font-size: 13px;
+}
+.profile-grid .label { color: var(--g-mid); }
+.profile-grid .full { grid-column: 1 / -1; }
+.opt-badge {
+  margin-top: 14px; padding: 10px 14px;
+  background: rgba(0,229,255,0.04);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 3px; font-size: 12px; color: var(--cyan);
+}
+
+/* ── Experience ── */
+.exp-block { margin-bottom: 22px; }
+.exp-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.exp-role { color: var(--g); font-size: 14px; font-weight: 700; }
+.exp-co { color: var(--g-mid); }
+.exp-date {
+  font-size: 10px; color: var(--amber);
+  background: rgba(255,179,0,0.08);
+  padding: 2px 10px; border-radius: 2px;
+}
+.exp-bullet { padding-left: 18px; margin-bottom: 4px; line-height: 1.7; font-size: 12px; }
+.exp-bullet::before { content: '→ '; color: var(--g); }
+
+/* ── Skills ── */
+.skill-cat { margin-bottom: 18px; }
+.skill-bar-wrap { margin-bottom: 4px; }
+.skill-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--g-soft); margin-bottom: 2px; }
+.skill-bar { height: 5px; background: rgba(0,255,65,0.08); border-radius: 3px; overflow: hidden; }
+.skill-bar-fill { height: 100%; border-radius: 3px; transition: width 1.5s ease; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.skill-tag {
+  font-size: 10px; padding: 2px 8px;
+  background: rgba(0,255,65,0.05);
+  border: 1px solid rgba(0,255,65,0.1);
+  border-radius: 2px; color: var(--g-soft);
+  transition: all 0.2s;
+}
+.skill-tag:hover { background: rgba(0,255,65,0.12); border-color: var(--g); color: #fff; transform: translateY(-1px); }
+
+/* ── Projects ── */
+.proj-card {
+  padding: 12px 14px; margin-bottom: 10px;
+  border: 1px solid rgba(0,255,65,0.06);
+  border-radius: 3px; cursor: pointer;
+  transition: all 0.3s;
+}
+.proj-card:hover, .proj-card.open { background: rgba(0,255,65,0.04); border-color: rgba(0,255,65,0.18); }
+.proj-name { font-size: 13px; color: var(--g); font-weight: 700; }
+.proj-toggle { color: var(--g-mid); }
+.proj-card.open .proj-toggle { color: var(--g); }
+.proj-detail { margin-top: 10px; font-size: 12px; line-height: 1.7; display: none; }
+.proj-card.open .proj-detail { display: block; }
+.proj-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.proj-tag {
+  font-size: 9px; padding: 1px 7px;
+  background: rgba(0,229,255,0.07);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 2px; color: var(--cyan);
+}
+
+/* ── Certs ── */
+.cert-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cert-row:last-child { border-bottom: none; }
+.cert-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.cert-dot.active { background: var(--g); box-shadow: 0 0 6px var(--g); animation: pulse 2s infinite; }
+.cert-dot.pending { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+.cert-name { font-size: 13px; color: var(--g-soft); }
+.cert-org { font-size: 11px; color: var(--g-mid); }
+
+/* ── Contact ── */
+.contact-row { line-height: 2.4; font-size: 13px; }
+.contact-label { display: inline-block; width: 110px; color: var(--g-mid); }
+
+/* ── Resume page ── */
+.resume-frame {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 28px 32px;
+  font-size: 12px; line-height: 1.7;
+  max-width: 800px;
+}
+.resume-frame h2 {
+  font-family: var(--font-display); font-size: 22px;
+  color: var(--g); letter-spacing: 3px; margin-bottom: 4px;
+}
+.resume-frame .r-sub { font-size: 11px; color: var(--g-mid); margin-bottom: 16px; }
+.resume-frame .r-section {
+  margin-top: 18px; padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.resume-frame .r-section-title {
+  font-family: var(--font-display); font-size: 10px;
+  letter-spacing: 3px; color: var(--cyan); margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.resume-actions {
+  display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.btn-action {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  background: rgba(0,255,65,0.08);
+  border: 1px solid rgba(0,255,65,0.25);
+  border-radius: 3px;
+  color: var(--g); font-family: var(--font-mono);
+  font-size: 12px; cursor: pointer;
+  transition: all 0.25s; text-decoration: none;
+}
+.btn-action:hover { background: rgba(0,255,65,0.15); border-color: var(--g); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,255,65,0.1); }
+.btn-action.cyan { border-color: rgba(0,229,255,0.25); color: var(--cyan); background: rgba(0,229,255,0.06); }
+.btn-action.cyan:hover { border-color: var(--cyan); background: rgba(0,229,255,0.12); }
+
+/* ── Terminal ── */
+.terminal {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  margin-top: 20px;
+}
+.term-bar {
+  background: rgba(0,255,65,0.05);
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.term-dot { width: 10px; height: 10px; border-radius: 50%; }
+.term-output { padding: 12px; max-height: 220px; overflow-y: auto; font-size: 12px; }
+.term-line { margin-bottom: 2px; white-space: pre-wrap; line-height: 1.5; }
+.term-line.sys { color: var(--g-mid); }
+.term-line.err { color: var(--red); }
+.term-line.out { color: var(--g-soft); }
+.term-line.in { color: var(--cyan); }
+.term-line.in::before { content: 'root@abett-sec:~$ '; color: var(--g); }
+.term-input-row {
+  border-top: 1px solid var(--border);
+  padding: 8px 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.term-prompt { color: var(--g); white-space: nowrap; font-size: 12px; }
+.term-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: var(--g-soft); font-family: var(--font-mono);
+  font-size: 12px; caret-color: var(--g);
+}
+.term-input::placeholder { color: #1a3a1a; }
+
+/* ── Sidebar: Tips ── */
+.tip-box { font-size: 11px; line-height: 1.6; }
+.tip-label {
+  font-family: var(--font-display); font-size: 8px;
+  letter-spacing: 2px; color: var(--amber);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}
+.tip-text { color: var(--g-soft); min-height: 50px; }
+.tip-counter { font-size: 9px; color: var(--g-mid); margin-top: 8px; }
+
+/* ── Sidebar: Threat Feed ── */
+.threat-item {
+  font-size: 10px; padding: 6px 0;
+  border-bottom: 1px solid rgba(0,255,65,0.05);
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.threat-item:last-child { border-bottom: none; }
+.threat-sev {
+  font-size: 8px; padding: 1px 5px; border-radius: 2px;
+  font-weight: 700; letter-spacing: 1px; white-space: nowrap;
+  flex-shrink: 0; margin-top: 2px;
+}
+.sev-crit { background: rgba(255,23,68,0.2); color: var(--red); }
+.sev-high { background: rgba(255,179,0,0.2); color: var(--amber); }
+.sev-med { background: rgba(0,229,255,0.15); color: var(--cyan); }
+.sev-low { background: rgba(0,255,65,0.1); color: var(--g); }
+.threat-text { color: var(--g-mid); line-height: 1.5; }
+.threat-ts { font-size: 9px; color: #2a4a2a; margin-top: 2px; }
+
+/* ── Sidebar: Net Monitor ── */
+.net-line {
+  font-size: 10px; color: var(--g-mid);
+  padding: 2px 0; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.net-line .allow { color: var(--g); }
+.net-line .block { color: var(--red); }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .main-wrap { grid-template-columns: 1fr; }
+  .sidebar { order: -1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .profile-grid { grid-template-columns: 1fr; }
+  .header-inner { flex-direction: column; align-items: flex-start; }
+  .nav-inner { gap: 0; }
+  .nav-btn { padding: 8px 12px; font-size: 10px; }
+  .resume-frame { padding: 18px 16px; }
+}
+@media (max-width: 560px) {
+  .sidebar { grid-template-columns: 1fr; }
+  .status-bar { font-size: 10px; gap: 8px; }
+  .nav-key { display: none; }
+  .resume-actions { flex-direction: column; }
+}
+
+/* ── Boot Screen ── */
+.boot-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s, visibility 0.6s;
+}
+.boot-screen.done { opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-content { max-width: 550px; padding: 40px; }
+.boot-line { color: var(--g); font-size: 13px; line-height: 2; opacity: 0; transition: opacity 0.3s; }
+.boot-line.show { opacity: 1; }
+.boot-grant {
+  text-align: center; margin-top: 28px;
+  font-family: var(--font-display); font-size: 26px;
+  font-weight: 900; letter-spacing: 6px;
+  color: var(--g); text-shadow: 0 0 20px rgba(0,255,65,0.3);
+  opacity: 0; transition: opacity 0.5s;
+}
+.boot-grant.show { opacity: 1; }
+
+/* ── Footer ── */
+.site-footer {
+  text-align: center; padding: 20px;
+  font-size: 10px; color: #1a3a1a;
+  position: relative; z-index: 1;
+}
+
+/* ── Live feed indicators ── */
+.live-pulse {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--g);
+  box-shadow: 0 0 4px var(--g);
+  animation: pulse 1.5s infinite;
+}
+.threat-source {
+  font-size: 8px; color: var(--g-dim);
+  background: rgba(0,255,65,0.06);
+  padding: 1px 5px; border-radius: 2px;
+  margin-top: 3px; display: inline-block;
+  border: 1px solid rgba(0,255,65,0.08);
+}
+.feed-loading {
+  text-align: center; padding: 20px;
+  color: var(--g-mid); font-size: 11px;
+}
+.feed-loading span { animation: pulse 1.5s infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.refresh-btn {
+  background: none; border: 1px solid var(--border);
+  border-radius: 2px; color: var(--g-mid);
+  font-size: 10px; padding: 2px 6px; cursor: pointer;
+  font-family: var(--font-mono); transition: all 0.2s;
+}
+.refresh-btn:hover { border-color: var(--g); color: var(--g); }
+
+/* ── Feed source tabs ── */
+.feed-tab { transition: all 0.2s !important; }
+.feed-tab:hover { color: var(--g) !important; background: rgba(0,255,65,0.03) !important; }
+.feed-tab.active { color: var(--g) !important; border-bottom-color: var(--g) !important; background: rgba(0,255,65,0.05) !important; }
+.threat-item { transition: background 0.2s; }
+.threat-item[style*="cursor"] { border-radius: 3px; }
+.threat-item[style*="cursor"]:hover { background: rgba(0,255,65,0.04); }
+</style>
+</head>
+<body>
+
+<!-- Matrix BG -->
+<canvas id="matrix-bg"></canvas>
+
+<!-- Boot Screen -->
+<div class="boot-screen" id="bootScreen">
+  <div class="boot-content">
+    <div id="bootLines"></div>
+    <div class="boot-grant" id="bootGrant">ACCESS GRANTED</div>
+  </div>
+</div>
+
+<!-- News Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker-label">⚡ THREAT INTEL <span id="tickerStatusBadge" style="margin-left:6px;font-size:8px;letter-spacing:1px"></span></div>
+  <div style="overflow:hidden;flex:1">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+  <button onclick="fetchTickerNews()" title="Refresh news" style="background:none;border:none;border-left:1px solid var(--border);color:var(--g-mid);font-size:12px;padding:0 12px;cursor:pointer;font-family:var(--font-mono);flex-shrink:0;transition:color 0.2s" onmouseover="this.style.color='var(--g)'" onmouseout="this.style.color='var(--g-mid)'">⟳</button>
+</div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-hex"><span>AR</span></div>
+      <div>
+        <div class="logo-text">ABETT REDDY</div>
+        <div class="logo-sub">INCIDENT RESPONSE &bull; DIGITAL FORENSICS &bull; SOC OPS</div>
+      </div>
+    </div>
+    <div class="clock-box">
+      <div class="clock-time" id="liveClock">00:00:00</div>
+      <div id="liveDate" style="font-size:10px"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+  <div class="nav-inner" id="navBar">
+    <button class="nav-btn active" data-sec="about"><span class="nav-key">1</span>ABOUT</button>
+    <button class="nav-btn" data-sec="experience"><span class="nav-key">2</span>EXPERIENCE</button>
+    <button class="nav-btn" data-sec="skills"><span class="nav-key">3</span>SKILLS</button>
+    <button class="nav-btn" data-sec="projects"><span class="nav-key">4</span>PROJECTS</button>
+    <button class="nav-btn" data-sec="certs"><span class="nav-key">5</span>CERTS</button>
+    <button class="nav-btn" data-sec="contact"><span class="nav-key">6</span>CONTACT</button>
+    <button class="nav-btn" data-sec="resume"><span class="nav-key">7</span>RESUME</button>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main-wrap">
+  <div class="content-area">
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>▸ CLEARANCE: <b style="color:var(--g)">STEM-OPT</b></span>
+      <span>▸ XP: <b style="color:var(--amber)">1.5 YRS</b></span>
+      <span>▸ CERTS: <b style="color:var(--cyan)">CEH · QUALYS EDR</b></span>
+      <span>▸ SEC+: <b style="color:var(--amber)">IN PROGRESS</b></span>
+      <span>▸ TOOLS: <b style="color:var(--g)">35+</b></span>
+      <span>▸ SESSION: <b style="color:var(--g)" id="sessionTimer">00:00</b></span>
+    </div>
+
+    <!-- ═══ ABOUT ═══ -->
+    <div class="section active" id="sec-about">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-icon" style="color:var(--g)">[~]</span><span class="panel-title" style="color:var(--g)">SYSTEM PROFILE</span></div>
+        <div class="panel-body">
+          <div class="profile-grid">
+            <div><span class="label">OPERATOR:</span> Abett Reddy</div>
+            <div><span class="label">STATUS:</span> <span style="color:var(--g)">● ACTIVE — SEEKING OPPORTUNITIES</span></div>
+            <div class="full"><span class="label">ROLE:</span> Incident Response Analyst | Digital Forensics | SOC Operations</div>
+            <div><span class="label">LOCATION:</span> United States</div>
+            <div><span class="label">AUTH:</span> STEM OPT — Fully Authorized</div>
+            <div class="full" style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px">
+              <span class="label">EDUCATION:</span>
+              <div style="padding-left:18px;margin-top:4px;line-height:1.8">
+                M.S. Cybersecurity — University of North Texas (GPA 3.3)<br>
+                B.S. Computer Science — JNTUH (GPA 3.4)
+              </div>
+            </div>
+          </div>
+          <div class="opt-badge">⚡ STEM OPT — 3 years work authorization, zero sponsorship cost to employer. Fully authorized to work in the United States.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ EXPERIENCE ═══ -->
+    <div class="section" id="sec-experience">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-icon" style="color:var(--cyan)">[⚔]</span><span class="panel-title" style="color:var(--cyan)">MISSION LOG</span></div>
+        <div class="panel-body">
+          <div class="exp-block">
+            <div class="exp-header">
+              <div><span class="exp-role">Incident Response Analyst</span> <span class="exp-co">@ OKTA Inc.</span></div>
+              <span class="exp-date">Jan 2025 – Dec 2025</span>
+            </div>
+            <div class="exp-bullet">Investigated security incidents using FTK Imager, EnCase & Cellebrite, identifying threats and executing containment within SLA</div>
+            <div class="exp-bullet">Analyzed 50+ malware samples with IDA Pro, Ghidra & Cuckoo Sandbox, uncovering IOCs integrated into detection rules</div>
+            <div class="exp-bullet">Performed memory and disk forensics across endpoints to reconstruct attack timelines and lateral movement paths</div>
+            <div class="exp-bullet">Developed Python log-parsing scripts that reduced investigation time by 40% across the IR team</div>
+            <div class="exp-bullet">Authored IR playbooks and documentation supporting team processes and regulatory compliance</div>
+          </div>
+          <div class="exp-block">
+            <div class="exp-header">
+              <div><span class="exp-role">SOC Analyst</span> <span class="exp-co">@ Cloudchip Technologies</span></div>
+              <span class="exp-date">Jun 2022 – Dec 2022</span>
+            </div>
+            <div class="exp-bullet">Monitored and triaged security alerts across Splunk, QRadar, CrowdStrike & Microsoft Defender, processing 200+ alerts daily</div>
+            <div class="exp-bullet">Enriched threat data using OSINT tools (Shodan, VirusTotal, Maltego) to accelerate incident response and containment</div>
+            <div class="exp-bullet">Built SIEM correlation rules that reduced false positive rates by 30% for the SOC team</div>
+            <div class="exp-bullet">Produced investigation reports using standardized templates, improving knowledge sharing across shifts</div>
+            <div class="exp-bullet">Managed alert escalation workflows and remediation recommendations through ServiceNow ticketing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SKILLS ═══ -->
+    <div class="section" id="sec-skills">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-icon" style="color:var(--amber)">[▓]</span><span class="panel-title" style="color:var(--amber)">ARSENAL</span></div>
+        <div class="panel-body" id="skillsBody"></div>
+      </div>
+    </div>
+
+    <!-- ═══ PROJECTS ═══ -->
+    <div class="section" id="sec-projects">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-icon" style="color:var(--red)">[◆]</span><span class="panel-title" style="color:var(--red)">OPERATIONS</span></div>
+        <div class="panel-body" id="projectsBody"></div>
+      </div>
+    </div>
+
+    <!-- ═══ CERTS ═══ -->
+    <div class="section" id="sec-certs">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-icon" style="color:var(--g)">[✓]</span><span class="panel-title" style="color:var(--g)">CREDENTIALS</span></div>
+        <div class="panel-body" id="certsBody"></div>
+      </div>
+    </div>
+
+    <!-- ═══ CONTACT ═══ -->
+    <div class="section" id="sec-contact">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-icon" style="color:var(--cyan)">[⟁]</span><span class="panel-title" style="color:var(--cyan)">ESTABLISH CONNECTION</span></div>
+        <div class="panel-body">
+          <div class="contact-row"><span class="contact-label">EMAIL</span> <a href="mailto:abettreddycyber@gmail.com">abettreddycyber@gmail.com</a></div>
+          <div class="contact-row"><span class="contact-label">LINKEDIN</span> <a href="https://www.linkedin.com/in/abett-reddy-cheruku/" target="_blank" rel="noopener">linkedin.com/in/abett-reddy-cheruku</a></div>
+          <div class="contact-row"><span class="contact-label">GITHUB</span> <a href="https://github.com/abett07" target="_blank" rel="noopener">github.com/abett07</a></div>
+          <div class="contact-row"><span class="contact-label">PORTFOLIO</span> <a href="https://abett07.github.io/cybersec-playbook/" target="_blank" rel="noopener">abett07.github.io/cybersec-playbook</a></div>
+
+          <!-- Contact form -->
+          <div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--border)">
+            <div style="font-family:var(--font-display);font-size:10px;letter-spacing:2px;color:var(--g);margin-bottom:12px">SEND MESSAGE</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <input id="msgName" type="text" placeholder="Your name..." style="background:rgba(0,255,65,0.03);border:1px solid var(--border);border-radius:3px;padding:10px 14px;color:var(--g-soft);font-family:var(--font-mono);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--border)'">
+              <input id="msgEmail" type="email" placeholder="Your email..." style="background:rgba(0,255,65,0.03);border:1px solid var(--border);border-radius:3px;padding:10px 14px;color:var(--g-soft);font-family:var(--font-mono);font-size:12px;outline:none" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--border)'">
+              <textarea id="msgBody" rows="4" placeholder="Your message..." style="background:rgba(0,255,65,0.03);border:1px solid var(--border);border-radius:3px;padding:10px 14px;color:var(--g-soft);font-family:var(--font-mono);font-size:12px;outline:none;resize:vertical" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+              <button onclick="sendMessage()" class="btn-action" style="border:1px solid var(--g);align-self:flex-start">⟫ TRANSMIT</button>
+              <div id="msgStatus" style="font-size:11px;color:var(--g);display:none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ RESUME ═══ -->
+    <div class="section" id="sec-resume">
+      <div class="resume-actions">
+        <a href="mailto:abettreddycyber@gmail.com?subject=Resume%20Request%20-%20Abett%20Reddy&body=Hi%20Abett%2C%0AI%20viewed%20your%20portfolio%20and%20would%20like%20to%20request%20your%20resume." class="btn-action">✉ REQUEST RESUME PDF</a>
+        <a href="https://www.linkedin.com/in/abett-reddy-cheruku/" target="_blank" rel="noopener" class="btn-action cyan">⟁ VIEW LINKEDIN</a>
+        <a href="https://github.com/abett07" target="_blank" rel="noopener" class="btn-action" style="border-color:rgba(255,179,0,0.25);color:var(--amber);background:rgba(255,179,0,0.06)">◆ VIEW GITHUB</a>
+      </div>
+      <div class="resume-frame">
+        <h2>ABETT REDDY</h2>
+        <div class="r-sub">Denton, TX | (972) 863-1968 | abettreddycyber@gmail.com | STEM OPT Authorized</div>
+
+        <div class="r-section">
+          <div class="r-section-title">Professional Summary</div>
+          <p>Incident Response Analyst with hands-on experience in incident response, digital forensics, and SOC operations. Delivered Python log-parsing scripts that cut investigation time by 40% and built SIEM rules that reduced false positives by 30%. Proficient with forensic tools (FTK Imager, EnCase, Cellebrite), SIEM platforms (Splunk, QRadar), and malware analysis (IDA Pro, Ghidra). Ready to strengthen threat detection and response for a dynamic security team.</p>
+        </div>
+
+        <div class="r-section">
+          <div class="r-section-title">Experience</div>
+          <div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap"><strong style="color:var(--g)">Incident Response Analyst — OKTA Inc.</strong><span style="color:var(--amber)">Jan 2025 – Dec 2025</span></div>
+            <div class="exp-bullet">Investigated security incidents using FTK Imager, EnCase & Cellebrite, identifying threats and executing containment</div>
+            <div class="exp-bullet">Analyzed 50+ malware samples with IDA Pro, Ghidra & Cuckoo Sandbox, uncovering IOCs for detection rules</div>
+            <div class="exp-bullet">Performed memory and disk forensics to reconstruct attack timelines and lateral movement paths</div>
+            <div class="exp-bullet">Developed Python log-parsing scripts reducing investigation time by 40%</div>
+            <div class="exp-bullet">Authored IR playbooks supporting team processes and regulatory compliance</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap"><strong style="color:var(--g)">SOC Analyst — Cloudchip Technologies</strong><span style="color:var(--amber)">Jun 2022 – Dec 2022</span></div>
+            <div class="exp-bullet">Monitored and triaged 200+ daily security alerts across Splunk, QRadar, CrowdStrike & Microsoft Defender</div>
+            <div class="exp-bullet">Enriched threat data using OSINT tools (Shodan, VirusTotal, Maltego) accelerating containment</div>
+            <div class="exp-bullet">Built SIEM correlation rules reducing false positive rates by 30%</div>
+            <div class="exp-bullet">Managed alert escalation workflows and remediation through ServiceNow ticketing</div>
+          </div>
+        </div>
+
+        <div class="r-section">
+          <div class="r-section-title">Education</div>
+          <div>M.S. Cybersecurity — University of North Texas (GPA 3.3) | Jan 2023 – Dec 2024</div>
+          <div>B.S. Computer Science — JNTUH (GPA 3.4) | Jun 2019 – Jun 2022</div>
+        </div>
+
+        <div class="r-section">
+          <div class="r-section-title">Certifications</div>
+          <div>Certified Ethical Hacker (CEH) — EC-Council &bull; Cisco Intro to Cybersecurity &bull; Qualys EDR &bull; CompTIA Security+ (In Progress)</div>
+        </div>
+
+        <div class="r-section">
+          <div class="r-section-title">Technical Skills</div>
+          <p><strong>Security:</strong> Qualys, CrowdStrike Falcon, MS Defender, FTK Imager, EnCase, AXIOM, Cellebrite, IDA Pro, Ghidra, Cuckoo, Splunk, QRadar &bull; <strong>Threat:</strong> Nessus, OpenVAS, Malware Analysis, Shodan, VirusTotal, Maltego &bull; <strong>Cloud:</strong> AWS, Azure, NIST, ISO 27001, PCI DSS, HIPAA &bull; <strong>Dev:</strong> Python, PowerShell, Java, FastAPI, Streamlit &bull; <strong>Network:</strong> Snort, Suricata, Wireshark, Nmap, Metasploit</p>
+        </div>
+
+        <div class="r-section">
+          <div class="r-section-title">Key Projects</div>
+          <div class="exp-bullet"><strong>AI-Powered Cyber Deception:</strong> FastAPI phishing detection using BERT NLP + LLMs with MITRE ATT&CK-mapped honeypot</div>
+          <div class="exp-bullet"><strong>Threat Response Simulation:</strong> Simulated SOC with Nessus + Splunk, automated patch verification, SQLi/XSS attack testing</div>
+          <div class="exp-bullet"><strong>Linux From Scratch:</strong> Custom pentesting distro with 50+ security tools, AppArmor + iptables hardening</div>
+          <div class="exp-bullet"><strong>IDS/IPS on Raspberry Pi:</strong> Snort + Suricata real-time monitoring with TLS, fail2ban, and automated scanning</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terminal -->
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="term-dot" style="background:var(--red)"></div>
+        <div class="term-dot" style="background:var(--amber)"></div>
+        <div class="term-dot" style="background:var(--g)"></div>
+        <span style="color:var(--g-mid);font-size:11px;margin-left:8px">abett@sec-ops:~</span>
+      </div>
+      <div class="term-output" id="termOutput">
+        <div class="term-line sys">ABETT-SEC OS v3.1.7 — Secure Terminal Initialized</div>
+        <div class="term-line sys">Type "help" for commands. Live feeds: threats, news, refresh</div>
+      </div>
+      <div class="term-input-row">
+        <span class="term-prompt">root@abett-sec:~$</span>
+        <input class="term-input" id="termInput" placeholder="type a command..." autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- Cybersecurity Tips -->
+    <div class="panel">
+      <div class="panel-head"><span class="panel-icon" style="color:var(--amber)">💡</span><span class="panel-title" style="color:var(--amber)">SEC TIPS</span></div>
+      <div class="panel-body tip-box">
+        <div class="tip-label"><span style="display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50;animation:pulse 2s infinite"></span> TIP OF THE MOMENT</div>
+        <div class="tip-text" id="tipText"></div>
+        <div class="tip-counter" id="tipCounter"></div>
+      </div>
+    </div>
+
+    <!-- Threat Intelligence Feed — LIVE RSS -->
+    <div class="panel">
+      <div class="panel-head" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="panel-icon" style="color:var(--red)">🧪</span>
+          <span class="panel-title" style="color:var(--red)">THREAT FEED</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="threatStatusBadge" style="font-size:9px;font-family:var(--font-mono)"><span style="color:var(--amber);animation:pulse 1s infinite">⟳</span></span>
+          <button onclick="fetchAllThreats()" title="Refresh all feeds" style="background:none;border:1px solid var(--border);border-radius:2px;color:var(--g-mid);font-size:10px;padding:2px 6px;cursor:pointer;font-family:var(--font-mono);transition:all 0.2s" onmouseover="this.style.borderColor='var(--g)';this.style.color='var(--g)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--g-mid)'">⟳</button>
+        </div>
+      </div>
+      <!-- Feed source tabs -->
+      <div id="feedTabs" style="display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2)">
+        <button class="feed-tab active" data-feed="hackernews" onclick="switchThreatFeed('hackernews')" style="background:none;border:none;border-bottom:2px solid var(--g);color:var(--g);font-family:var(--font-mono);font-size:9px;padding:6px 10px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s">THN</button>
+        <button class="feed-tab" data-feed="krebsonsecurity" onclick="switchThreatFeed('krebsonsecurity')" style="background:none;border:none;border-bottom:2px solid transparent;color:var(--g-mid);font-family:var(--font-mono);font-size:9px;padding:6px 10px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s">KREBS</button>
+        <button class="feed-tab" data-feed="nvd" onclick="switchThreatFeed('nvd')" style="background:none;border:none;border-bottom:2px solid transparent;color:var(--g-mid);font-family:var(--font-mono);font-size:9px;padding:6px 10px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s">CVE/NVD</button>
+        <button class="feed-tab" data-feed="bleeping" onclick="switchThreatFeed('bleeping')" style="background:none;border:none;border-bottom:2px solid transparent;color:var(--g-mid);font-family:var(--font-mono);font-size:9px;padding:6px 10px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s">BLEEPING</button>
+        <button class="feed-tab" data-feed="darkreading" onclick="switchThreatFeed('darkreading')" style="background:none;border:none;border-bottom:2px solid transparent;color:var(--g-mid);font-family:var(--font-mono);font-size:9px;padding:6px 10px;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s">DARK RD</button>
+      </div>
+      <div class="panel-body" id="threatFeed" style="max-height:300px;overflow-y:auto"></div>
+    </div>
+
+    <!-- Network Monitor -->
+    <div class="panel">
+      <div class="panel-head"><span class="panel-icon" style="color:var(--cyan)">📡</span><span class="panel-title" style="color:var(--cyan)">NET MONITOR</span></div>
+      <div class="panel-body" id="netMonitor" style="max-height:120px;overflow-y:auto;font-family:var(--font-mono)"></div>
+    </div>
+
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div>Encrypted with 256-bit AES &bull; Secured by passion & persistence</div>
+  <div style="margin-top:4px">© 2026 Abett Reddy — Built for the cybersecurity frontline</div>
+</footer>
+
+<script>
+// ════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════
+const SKILLS_DATA = [
+  { cat: "Security & Forensics", pct: 92, color: "#00ff41", tags: ["Qualys","CrowdStrike Falcon","MS Defender","FTK Imager","EnCase","Magnet AXIOM","Cellebrite","Oxygen Forensics","IDA Pro","Ghidra","Cuckoo Sandbox","Splunk","IBM QRadar"] },
+  { cat: "Threat Management", pct: 88, color: "#ff1744", tags: ["Nessus","OpenVAS","Malware Analysis","Shodan","VirusTotal","Maltego","MITRE ATT&CK"] },
+  { cat: "Cloud & Compliance", pct: 78, color: "#00e5ff", tags: ["AWS","Azure","NIST 800-61","ISO 27001","PCI DSS","HIPAA"] },
+  { cat: "Programming & Tools", pct: 85, color: "#ffb300", tags: ["Python","PowerShell","Java","FastAPI","Streamlit","ServiceNow"] },
+  { cat: "Networking", pct: 90, color: "#ff6f00", tags: ["Snort","Suricata","Wireshark","Nmap","Metasploit"] },
+];
+
+const PROJECTS_DATA = [
+  { name: "AI-Powered Cyber Deception & IR System", desc: "FastAPI phishing detection using BERT NLP + local LLMs for threat summarization. Simulated Linux terminal honeypot environment mapped to MITRE ATT&CK framework. Streamlit dashboard with real-time session monitoring and risk scoring.", tags: ["Python","FastAPI","BERT","LLM","MITRE"] },
+  { name: "Proactive Monitoring & Threat Response Sim", desc: "Simulated SOC environment with Nessus + Splunk monitoring OWASP Top 10 vulnerabilities. Automated patch verification scripts in Python. Conducted SQLi & XSS attack simulations to test and validate detection rules.", tags: ["Splunk","Nessus","Python","OWASP"] },
+  { name: "Linux From Scratch for Pentesting", desc: "Custom Linux distribution with 50+ integrated security tools including Metasploit, Nmap, and Burp Suite. Optimized configurations for performance and security hardening using AppArmor and iptables.", tags: ["Linux","AppArmor","Metasploit","iptables"] },
+  { name: "IDS/IPS with Web Server on Raspberry Pi", desc: "Deployed Snort + Suricata for real-time network monitoring integrated with Apache/Nginx web servers. Hardened with TLS encryption, fail2ban intrusion prevention, and automated vulnerability scanning.", tags: ["Snort","Suricata","TLS","fail2ban"] },
+  { name: "Home Cybersecurity Lab", desc: "Virtual lab environment with VMware, Kali Linux & pfSense to simulate real-world attacks. Performed security audits using Nessus & Wireshark, implementing encryption and firewall rules.", tags: ["VMware","Kali","pfSense","Wireshark"] },
+];
+
+const CERTS_DATA = [
+  { name: "Certified Ethical Hacker (CEH)", org: "EC-Council", active: true },
+  { name: "Cisco Intro to Cybersecurity", org: "Cisco Networking Academy", active: true },
+  { name: "CompTIA Security+", org: "CompTIA", active: false },
+  { name: "EDR Certification", org: "Qualys", active: true },
+];
+
+const TIPS = [
+  "Always verify the sender's email domain character-by-character. Homoglyph attacks replace letters like 'rn' for 'm' in domain names.",
+  "Use hardware security keys (FIDO2/WebAuthn) instead of SMS-based 2FA. SIM swapping attacks bypass SMS verification entirely.",
+  "Monitor outbound DNS traffic — unusual query volumes or requests to uncommon TLDs can indicate C2 beaconing or data exfiltration.",
+  "Implement network segmentation to limit lateral movement. A compromised workstation shouldn't reach your database servers.",
+  "Review your cloud IAM policies quarterly. Overly permissive roles are the #1 cause of cloud security breaches.",
+  "Enable PowerShell Script Block Logging (Event ID 4104) on all Windows endpoints — it captures decoded commands that bypass obfuscation.",
+  "Check for LLMNR/NBT-NS poisoning in your network. Disable these protocols if not needed — they're a common initial access vector.",
+  "Regularly audit privileged accounts. Service accounts with admin rights and no MFA are prime targets for credential stuffing attacks.",
+  "Use canary tokens (files, DNS entries, API keys) as tripwires. They cost nothing to deploy and provide instant intrusion alerts.",
+  "When analyzing malware, always start static before dynamic. Extract strings, check PE headers, and review imports before executing in a sandbox.",
+  "Configure SIEM alerts for impossible travel — if a user authenticates from two countries within 30 minutes, it's likely credential compromise.",
+  "Implement DMARC, DKIM, and SPF for your organization's email domain. Without all three, you're vulnerable to domain spoofing attacks.",
+  "Use Sysmon with SwiftOnSecurity's config for Windows endpoint visibility. It captures process creation, network connections, and file changes.",
+  "Keep a forensic image of a known-good system state. Comparing against compromised systems dramatically speeds up artifact identification.",
+  "Practice your IR runbooks quarterly with tabletop exercises. The worst time to test your response plan is during a real incident.",
+];
+
+// ════════════════════════════════════════════
+// RSS FEEDS — REAL-TIME CYBERSECURITY INTEL
+// ════════════════════════════════════════════
+const RSS_FEEDS = {
+  hackernews:      { url: "https://feeds.feedburner.com/TheHackersNews", name: "The Hacker News", icon: "THN" },
+  krebsonsecurity: { url: "https://krebsonsecurity.com/feed/",          name: "Krebs on Security", icon: "KRB" },
+  nvd:             { url: "https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml", name: "NVD/CVE", icon: "CVE" },
+  bleeping:        { url: "https://www.bleepingcomputer.com/feed/",      name: "BleepingComputer", icon: "BLC" },
+  darkreading:     { url: "https://www.darkreading.com/rss.xml",         name: "Dark Reading", icon: "DRK" },
+};
+const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+// Live data stores
+let liveThreatItems = [];
+let liveNewsItems = [];
+let allFeedItems = [];
+let threatFetchStatus = 'idle';
+let newsFetchStatus = 'idle';
+let lastThreatFetch = null;
+let lastNewsFetch = null;
+let currentThreatFeed = 'hackernews';
+let feedRotationIdx = 0;
+const feedKeys = Object.keys(RSS_FEEDS);
+
+// Severity classifier — assigns severity based on keywords in titles
+function classifySeverity(title) {
+  const t = title.toLowerCase();
+  if (t.match(/zero.?day|0.?day|critical|cve-\d{4}-\d+|rce |remote code|actively exploit|emergency|ransomware|apt\d|breach/))
+    return { sev: 'CRIT', cls: 'sev-crit', tag: 'CRIT', tcls: 'ti-crit' };
+  if (t.match(/vulnerabilit|malware|phishing|attack|exploit|backdoor|botnet|data leak|compromise|trojan|supply.chain|threat/))
+    return { sev: 'HIGH', cls: 'sev-high', tag: 'WARN', tcls: 'ti-warn' };
+  if (t.match(/patch|update|flaw|bug|risk|warning|alert|campaign|scam|fraud/))
+    return { sev: 'MED', cls: 'sev-med', tag: 'WARN', tcls: 'ti-warn' };
+  return { sev: 'LOW', cls: 'sev-low', tag: 'INFO', tcls: 'ti-info' };
+}
+
+// Fetch a single RSS feed
+async function fetchFeed(feedKey) {
+  const feed = RSS_FEEDS[feedKey];
+  if (!feed) return [];
+  const url = RSS2JSON + encodeURIComponent(feed.url);
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data && data.items && data.items.length > 0) {
+      return data.items.map(item => {
+        const severity = classifySeverity(item.title || '');
+        const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
+        return {
+          title: item.title || 'Untitled',
+          link: item.link || '#',
+          pubDate,
+          timeStr: pubDate.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }),
+          feedKey,
+          feedName: feed.name,
+          feedIcon: feed.icon,
+          ...severity
+        };
+      });
+    }
+  } catch (err) {
+    console.warn(`Feed ${feedKey} failed:`, err);
+  }
+  return [];
+}
+
+// Fetch ALL feeds for the threat sidebar
+async function fetchAllThreats() {
+  threatFetchStatus = 'loading';
+  updateThreatHeader();
+  try {
+    const promises = feedKeys.map(k => fetchFeed(k));
+    const results = await Promise.allSettled(promises);
+    const items = [];
+    results.forEach(r => { if (r.status === 'fulfilled') items.push(...r.value); });
+    // Sort by date (newest first), dedupe by title
+    items.sort((a, b) => b.pubDate - a.pubDate);
+    const seen = new Set();
+    allFeedItems = items.filter(item => {
+      const key = item.title.toLowerCase().slice(0, 60);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    // Take top 12 for threat feed
+    liveThreatItems = allFeedItems.slice(0, 12).map(item => ({
+      sev: item.sev,
+      cls: item.cls,
+      text: item.title,
+      link: item.link,
+      source: item.feedName,
+      ts: item.timeStr
+    }));
+    threatFetchStatus = liveThreatItems.length > 0 ? 'live' : 'error';
+    lastThreatFetch = new Date();
+    renderLiveThreats();
+    updateThreatHeader();
+  } catch (err) {
+    console.error('Threat fetch error:', err);
+    threatFetchStatus = 'error';
+    updateThreatHeader();
+  }
+}
+
+// Fetch rotating feed for the ticker
+async function fetchTickerNews() {
+  newsFetchStatus = 'loading';
+  updateTickerHeader();
+  try {
+    // Fetch 3 feeds in parallel for the ticker
+    const tickerFeeds = ['hackernews', 'bleeping', 'krebsonsecurity'];
+    const promises = tickerFeeds.map(k => fetchFeed(k));
+    const results = await Promise.allSettled(promises);
+    const items = [];
+    results.forEach(r => { if (r.status === 'fulfilled') items.push(...r.value); });
+    items.sort((a, b) => b.pubDate - a.pubDate);
+    const seen = new Set();
+    liveNewsItems = items.filter(item => {
+      const key = item.title.toLowerCase().slice(0, 60);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 20).map(item => ({
+      tag: item.tag,
+      cls: item.tcls,
+      text: item.title,
+      source: item.feedName,
+      link: item.link
+    }));
+    newsFetchStatus = liveNewsItems.length > 0 ? 'live' : 'error';
+    lastNewsFetch = new Date();
+    buildLiveTicker();
+    updateTickerHeader();
+  } catch (err) {
+    console.error('Ticker fetch error:', err);
+    newsFetchStatus = 'error';
+    updateTickerHeader();
+  }
+}
+
+// Switch active feed source in the threat panel
+function switchThreatFeed(feedKey) {
+  if (!RSS_FEEDS[feedKey]) return;
+  currentThreatFeed = feedKey;
+  // Update active button styling
+  document.querySelectorAll('.feed-tab').forEach(el => {
+    el.classList.toggle('active', el.dataset.feed === feedKey);
+  });
+  // Filter from allFeedItems
+  const filtered = allFeedItems.filter(item => item.feedKey === feedKey).slice(0, 10);
+  if (filtered.length > 0) {
+    liveThreatItems = filtered.map(item => ({
+      sev: item.sev, cls: item.cls, text: item.title,
+      link: item.link, source: item.feedName, ts: item.timeStr
+    }));
+  }
+  renderLiveThreats();
+}
+
+// Auto-rotate feed source every 30s
+function autoRotateFeed() {
+  feedRotationIdx = (feedRotationIdx + 1) % feedKeys.length;
+  switchThreatFeed(feedKeys[feedRotationIdx]);
+}
+
+function updateThreatHeader() {
+  const el = document.getElementById('threatStatusBadge');
+  if (!el) return;
+  if (threatFetchStatus === 'loading') {
+    el.innerHTML = '<span style="color:var(--amber);animation:pulse 1s infinite">⟳ FETCHING...</span>';
+  } else if (threatFetchStatus === 'live') {
+    const ago = lastThreatFetch ? timeSince(lastThreatFetch) : '';
+    el.innerHTML = `<span style="color:var(--g)">● LIVE</span> <span style="color:var(--g-mid);font-size:8px">${ago}</span>`;
+  } else if (threatFetchStatus === 'error') {
+    el.innerHTML = '<span style="color:var(--red)">✗ OFFLINE</span>';
+  }
+}
+
+function updateTickerHeader() {
+  const el = document.getElementById('tickerStatusBadge');
+  if (!el) return;
+  if (newsFetchStatus === 'loading') {
+    el.textContent = '⟳';
+    el.style.color = 'var(--amber)';
+  } else if (newsFetchStatus === 'live') {
+    el.textContent = '● LIVE';
+    el.style.color = 'var(--g)';
+  } else if (newsFetchStatus === 'error') {
+    el.textContent = '✗';
+    el.style.color = 'var(--red)';
+  }
+}
+
+function timeSince(date) {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  return Math.floor(s / 3600) + 'h ago';
+}
+
+// Convenience aliases
+function fetchLiveThreats() { return fetchAllThreats(); }
+function fetchLiveNews() { return fetchTickerNews(); }
+
+// ════════════════════════════════════════════
+// BOOT SEQUENCE
+// ════════════════════════════════════════════
+const BOOT_LINES = [
+  "[OK] Loading kernel modules...",
+  "[OK] Initializing security protocols...",
+  "[OK] Mounting encrypted volumes...",
+  "[OK] Starting CrowdStrike Falcon sensor...",
+  "[OK] Loading MITRE ATT&CK framework v14...",
+  "[OK] Connecting to RSS threat intelligence feeds...",
+  "[OK] Sources: TheHackerNews, KrebsOnSecurity, NVD, BleepingComputer, DarkReading",
+  "[OK] Real-time news ticker initialized...",
+  "[OK] Network monitoring active...",
+  "[OK] Portfolio system ready — all feeds LIVE.",
+];
+
+(function boot() {
+  const container = document.getElementById('bootLines');
+  const grant = document.getElementById('bootGrant');
+  const screen = document.getElementById('bootScreen');
+  let i = 0;
+  const iv = setInterval(() => {
+    if (i < BOOT_LINES.length) {
+      const el = document.createElement('div');
+      el.className = 'boot-line';
+      el.textContent = BOOT_LINES[i];
+      container.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('show'));
+      i++;
+    } else {
+      clearInterval(iv);
+      setTimeout(() => { grant.classList.add('show'); }, 300);
+      setTimeout(() => { screen.classList.add('done'); }, 1400);
+    }
+  }, 200);
+})();
+
+// ════════════════════════════════════════════
+// MATRIX RAIN
+// ════════════════════════════════════════════
+(function initMatrix() {
+  const c = document.getElementById('matrix-bg');
+  const ctx = c.getContext('2d');
+  let w, h, cols, drops;
+  const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ";
+  function resize() {
+    w = c.width = window.innerWidth;
+    h = c.height = window.innerHeight;
+    cols = Math.floor(w / 16);
+    drops = Array(cols).fill(1);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw() {
+    ctx.fillStyle = 'rgba(10,14,10,0.05)';
+    ctx.fillRect(0, 0, w, h);
+    ctx.font = '14px monospace';
+    for (let i = 0; i < drops.length; i++) {
+      ctx.fillStyle = Math.random() > 0.97 ? '#fff' : '#00ff41';
+      ctx.globalAlpha = 0.12 + Math.random() * 0.25;
+      ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 16, drops[i] * 16);
+      ctx.globalAlpha = 1;
+      if (drops[i] * 16 > h && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ════════════════════════════════════════════
+// CLOCK & SESSION TIMER
+// ════════════════════════════════════════════
+const sessionStart = Date.now();
+function updateClock() {
+  const now = new Date();
+  document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+  document.getElementById('liveDate').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
+  const ss = String(elapsed % 60).padStart(2, '0');
+  document.getElementById('sessionTimer').textContent = mm + ':' + ss;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Update feed status badges every 30s
+setInterval(() => { updateThreatHeader(); updateTickerHeader(); }, 30000);
+
+// ════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════
+const navMap = { '1': 'about', '2': 'experience', '3': 'skills', '4': 'projects', '5': 'certs', '6': 'contact', '7': 'resume' };
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) { sec.classList.remove('active'); void sec.offsetWidth; sec.classList.add('active'); }
+  document.querySelector(`.nav-btn[data-sec="${id}"]`)?.classList.add('active');
+}
+
+document.getElementById('navBar').addEventListener('click', e => {
+  const btn = e.target.closest('.nav-btn');
+  if (btn) showSection(btn.dataset.sec);
+});
+
+document.addEventListener('keydown', e => {
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  if (navMap[e.key]) showSection(navMap[e.key]);
+});
+
+// ════════════════════════════════════════════
+// RENDER: SKILLS
+// ════════════════════════════════════════════
+(function renderSkills() {
+  const container = document.getElementById('skillsBody');
+  SKILLS_DATA.forEach(s => {
+    let html = `<div class="skill-cat"><div class="skill-bar-wrap">
+      <div class="skill-bar-label"><span>${s.cat}</span><span>${s.pct}%</span></div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:${s.pct}%;background:linear-gradient(90deg,${s.color},${s.color}99);box-shadow:0 0 8px ${s.color}44"></div></div>
+    </div><div class="skill-tags">`;
+    s.tags.forEach(t => { html += `<span class="skill-tag">${t}</span>`; });
+    html += '</div></div>';
+    container.innerHTML += html;
+  });
+})();
+
+// ════════════════════════════════════════════
+// RENDER: PROJECTS
+// ════════════════════════════════════════════
+(function renderProjects() {
+  const container = document.getElementById('projectsBody');
+  PROJECTS_DATA.forEach((p, i) => {
+    let tagsHtml = p.tags.map(t => `<span class="proj-tag">${t}</span>`).join('');
+    container.innerHTML += `<div class="proj-card" onclick="this.classList.toggle('open')">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="proj-name"><span class="proj-toggle">[+]</span> ${p.name}</span>
+      </div>
+      <div class="proj-detail">${p.desc}<div class="proj-tags" style="margin-top:8px">${tagsHtml}</div></div>
+    </div>`;
+  });
+})();
+
+// ════════════════════════════════════════════
+// RENDER: CERTS
+// ════════════════════════════════════════════
+(function renderCerts() {
+  const container = document.getElementById('certsBody');
+  CERTS_DATA.forEach(c => {
+    container.innerHTML += `<div class="cert-row">
+      <div class="cert-dot ${c.active ? 'active' : 'pending'}"></div>
+      <div><div class="cert-name">${c.name}</div><div class="cert-org">${c.org} — ${c.active ? 'VERIFIED' : 'IN PROGRESS'}</div></div>
+    </div>`;
+  });
+})();
+
+// ════════════════════════════════════════════
+// TIPS ROTATION
+// ════════════════════════════════════════════
+let tipIdx = 0;
+function rotateTip() {
+  document.getElementById('tipText').textContent = TIPS[tipIdx];
+  document.getElementById('tipCounter').textContent = `${tipIdx + 1} / ${TIPS.length}`;
+  tipIdx = (tipIdx + 1) % TIPS.length;
+}
+rotateTip();
+setInterval(rotateTip, 12000);
+
+// ════════════════════════════════════════════
+// THREAT FEED — LIVE RENDERING
+// ════════════════════════════════════════════
+function renderLiveThreats() {
+  const container = document.getElementById('threatFeed');
+  container.innerHTML = '';
+  if (liveThreatItems.length === 0) {
+    container.innerHTML = '<div class="threat-item" style="justify-content:center;color:var(--g-mid)">No items from this feed yet.</div>';
+    return;
+  }
+  liveThreatItems.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'threat-item';
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.5s';
+    el.style.transitionDelay = (i * 60) + 'ms';
+    if (item.link && item.link !== '#') {
+      el.style.cursor = 'pointer';
+      el.onclick = () => window.open(item.link, '_blank', 'noopener');
+    }
+    const srcTag = item.source ? `<span style="font-size:8px;color:var(--g-dim);background:rgba(0,255,65,0.06);padding:1px 4px;border-radius:2px;margin-top:3px;display:inline-block;border:1px solid rgba(0,255,65,0.08)">${item.source}</span>` : '';
+    const tsTag = item.ts ? `<span class="threat-ts">${item.ts}</span>` : '';
+    el.innerHTML = `<span class="threat-sev ${item.cls}">${item.sev}</span><div><div class="threat-text">${item.text}</div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:3px">${srcTag} ${tsTag}</div></div>`;
+    container.appendChild(el);
+    requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = '1'; }));
+  });
+}
+
+// Initial render with loading state
+(function initThreatFeed() {
+  const container = document.getElementById('threatFeed');
+  container.innerHTML = '<div class="threat-item" style="justify-content:center;color:var(--g-mid)"><span style="animation:pulse 1.5s infinite">⟳ Connecting to RSS threat intel feeds...</span></div>';
+})();
+
+// Fetch live data on load, refresh every 10 min, auto-rotate feeds every 30s
+setTimeout(fetchAllThreats, 1800);
+setInterval(fetchAllThreats, 10 * 60 * 1000);
+setInterval(autoRotateFeed, 30000);
+
+// ════════════════════════════════════════════
+// NETWORK MONITOR
+// ════════════════════════════════════════════
+function addNetLine() {
+  const container = document.getElementById('netMonitor');
+  const protos = ['TCP', 'UDP', 'HTTPS', 'SSH', 'DNS', 'TLS'];
+  const proto = protos[Math.floor(Math.random() * protos.length)];
+  const src = `10.0.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+  const port = [22, 80, 443, 8080, 8443, 3389, 53, 1337][Math.floor(Math.random() * 8)];
+  const allow = Math.random() > 0.12;
+  const el = document.createElement('div');
+  el.className = 'net-line';
+  el.innerHTML = `[${proto}] ${src}:${port} → portfolio <span class="${allow ? 'allow' : 'block'}">[${allow ? 'ALLOW' : 'BLOCK'}]</span>`;
+  container.insertBefore(el, container.firstChild);
+  while (container.children.length > 10) container.removeChild(container.lastChild);
+}
+setInterval(addNetLine, 2200);
+for (let i = 0; i < 5; i++) addNetLine();
+
+// ════════════════════════════════════════════
+// NEWS TICKER — LIVE RENDERING
+// ════════════════════════════════════════════
+function buildLiveTicker() {
+  const track = document.getElementById('tickerTrack');
+  if (liveNewsItems.length === 0) return;
+  // Duplicate for infinite scroll
+  const all = [...liveNewsItems, ...liveNewsItems];
+  track.innerHTML = '';
+  all.forEach(n => {
+    const src = n.source ? ` <span style="opacity:0.4;font-size:9px">[${n.source}]</span>` : '';
+    const link = n.link ? ` onclick="window.open('${n.link}','_blank');event.stopPropagation()" style="cursor:pointer"` : '';
+    track.innerHTML += `<span class="ticker-item"${link}><span class="ti-tag ${n.cls}">${n.tag}</span>${n.text}${src}</span>`;
+  });
+  // Reset animation for smooth restart
+  track.style.animation = 'none';
+  void track.offsetWidth;
+  const duration = Math.max(60, liveNewsItems.length * 5);
+  track.style.animation = `scroll-ticker ${duration}s linear infinite`;
+}
+
+// Initial loading ticker
+(function initTicker() {
+  const track = document.getElementById('tickerTrack');
+  track.innerHTML = '<span class="ticker-item" style="color:var(--g-mid)">⟳ Fetching live cybersecurity news from RSS feeds...</span><span class="ticker-item" style="color:var(--g-mid)">Sources: The Hacker News, BleepingComputer, Krebs on Security</span>';
+})();
+
+// Fetch live data after boot, refresh every 10 min
+setTimeout(fetchTickerNews, 2500);
+setInterval(fetchTickerNews, 10 * 60 * 1000);
+
+// ════════════════════════════════════════════
+// TERMINAL
+// ════════════════════════════════════════════
+const termOutput = document.getElementById('termOutput');
+const termInput = document.getElementById('termInput');
+
+function termAdd(text, cls = 'out') {
+  const el = document.createElement('div');
+  el.className = 'term-line ' + cls;
+  el.textContent = text;
+  termOutput.appendChild(el);
+  termOutput.scrollTop = termOutput.scrollHeight;
+}
+function termAddHtml(html, cls = 'out') {
+  const el = document.createElement('div');
+  el.className = 'term-line ' + cls;
+  el.innerHTML = html;
+  termOutput.appendChild(el);
+  termOutput.scrollTop = termOutput.scrollHeight;
+}
+
+const TERM_COMMANDS = {
+  help: () => termAdd('Commands: about, experience, skills, projects, certs, contact, resume, whoami, nmap, status, threats, news, feeds, refresh, clear, tips, time'),
+  whoami: () => termAdd('root@abett-sec:~# uid=0(abett) gid=1337(cybersec) groups=IR,SOC,DFIR,ThreatHunting'),
+  nmap: () => termAdd(`Starting Nmap 7.94 ( https://nmap.org )\nHost: abett-reddy.sec (portfolio)\nPORT     STATE  SERVICE\n22/tcp   open   ssh-expertise\n80/tcp   open   http-portfolio\n443/tcp  open   https-linkedin\n1337/tcp open   elite-skills\n8080/tcp open   github-projects\nAll 5 scanned ports are OPEN — target is fully accessible.`),
+  status: () => termAdd(`╔══════════════════════════════════════════╗\n║  THREAT LEVEL:    ██████████░  92%      ║\n║  SYSTEM STATUS:   OPERATIONAL           ║\n║  ACTIVE CERTS:    3/4 VERIFIED          ║\n║  TOOLS LOADED:    35+ SECURITY          ║\n║  CASES HANDLED:   200+ INCIDENTS        ║\n║  MALWARE ANALYZED: 50+ SAMPLES          ║\n║  OPT STATUS:      ● AUTHORIZED (3 YRS) ║\n╚══════════════════════════════════════════╝`),
+  clear: () => { termOutput.innerHTML = ''; },
+  threats: () => {
+    if (liveThreatItems.length > 0) {
+      termAdd(`=== LIVE THREAT FEED [${RSS_FEEDS[currentThreatFeed]?.name || 'ALL'}] ===`, 'sys');
+      termAdd(`Last updated: ${lastThreatFetch ? lastThreatFetch.toLocaleTimeString() : 'N/A'} | Source: RSS`, 'sys');
+      liveThreatItems.forEach(t => {
+        termAdd(`[${t.sev}] ${t.text} — ${t.source} (${t.ts})`);
+      });
+    } else {
+      termAdd('Fetching live threats from RSS feeds...', 'sys');
+      fetchAllThreats().then(() => {
+        if (liveThreatItems.length > 0) {
+          liveThreatItems.forEach(t => termAdd(`[${t.sev}] ${t.text} — ${t.source}`));
+        } else {
+          termAdd('Could not fetch RSS feeds. Check network.', 'err');
+        }
+      });
+    }
+  },
+  news: () => {
+    if (liveNewsItems.length > 0) {
+      termAdd('=== LIVE CYBERSECURITY NEWS (RSS) ===', 'sys');
+      termAdd(`Last updated: ${lastNewsFetch ? lastNewsFetch.toLocaleTimeString() : 'N/A'} | Sources: THN, BleepingComputer, Krebs`, 'sys');
+      liveNewsItems.forEach(n => {
+        termAdd(`[${n.tag}] ${n.text} [${n.source}]`);
+      });
+    } else {
+      termAdd('Fetching live news from RSS...', 'sys');
+      fetchTickerNews().then(() => {
+        if (liveNewsItems.length > 0) {
+          liveNewsItems.forEach(n => termAdd(`[${n.tag}] ${n.text} [${n.source}]`));
+        } else {
+          termAdd('Could not fetch news feeds. Check network.', 'err');
+        }
+      });
+    }
+  },
+  feeds: () => {
+    termAdd('=== ACTIVE RSS FEED SOURCES ===', 'sys');
+    Object.entries(RSS_FEEDS).forEach(([key, feed]) => {
+      termAdd(`  [${feed.icon}] ${feed.name} — ${feed.url}`);
+    });
+    termAdd(`\nCurrent threat view: ${currentThreatFeed}`, 'sys');
+    termAdd('Switch with: feed <name> (e.g., feed nvd)', 'sys');
+  },
+  refresh: () => {
+    termAdd('Refreshing all RSS feeds...', 'sys');
+    fetchAllThreats();
+    fetchTickerNews();
+  },
+  tips: () => { termAdd(TIPS[Math.floor(Math.random() * TIPS.length)]); },
+  time: () => { termAdd(new Date().toString()); },
+  about: () => { showSection('about'); termAdd('Navigating to ABOUT section...', 'sys'); },
+  experience: () => { showSection('experience'); termAdd('Navigating to EXPERIENCE section...', 'sys'); },
+  skills: () => { showSection('skills'); termAdd('Navigating to SKILLS section...', 'sys'); },
+  projects: () => { showSection('projects'); termAdd('Navigating to PROJECTS section...', 'sys'); },
+  certs: () => { showSection('certs'); termAdd('Navigating to CERTS section...', 'sys'); },
+  contact: () => { showSection('contact'); termAdd('Navigating to CONTACT section...', 'sys'); },
+  resume: () => { showSection('resume'); termAdd('Navigating to RESUME section...', 'sys'); },
+};
+
+termInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const val = termInput.value.trim();
+    if (!val) return;
+    termAddHtml(val, 'in');
+    const cmd = val.toLowerCase();
+    // Handle 'feed <name>' command
+    if (cmd.startsWith('feed ')) {
+      const feedName = cmd.split(' ')[1];
+      if (RSS_FEEDS[feedName]) {
+        switchThreatFeed(feedName);
+        termAdd(`Switched threat feed to: ${RSS_FEEDS[feedName].name}`, 'sys');
+      } else {
+        termAdd(`Unknown feed: ${feedName}. Available: ${Object.keys(RSS_FEEDS).join(', ')}`, 'err');
+      }
+    } else if (TERM_COMMANDS[cmd]) {
+      TERM_COMMANDS[cmd]();
+    } else {
+      termAdd(`bash: ${cmd}: command not found. Type "help" for available commands.`, 'err');
+    }
+    termInput.value = '';
+  }
+});
+
+// ════════════════════════════════════════════
+// CONTACT FORM
+// ════════════════════════════════════════════
+function sendMessage() {
+  const name = document.getElementById('msgName').value.trim();
+  const email = document.getElementById('msgEmail').value.trim();
+  const body = document.getElementById('msgBody').value.trim();
+  const status = document.getElementById('msgStatus');
+  if (!name || !email || !body) {
+    status.style.display = 'block';
+    status.style.color = 'var(--red)';
+    status.textContent = '✗ All fields are required.';
+    return;
+  }
+  // Since this is a static site, open mailto
+  const subject = encodeURIComponent('Portfolio Contact from ' + name);
+  const bodyEnc = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + body);
+  window.open('mailto:abettreddycyber@gmail.com?subject=' + subject + '&body=' + bodyEnc, '_self');
+  status.style.display = 'block';
+  status.style.color = 'var(--g)';
+  status.textContent = '✓ Opening email client — message prepared.';
+  document.getElementById('msgName').value = '';
+  document.getElementById('msgEmail').value = '';
+  document.getElementById('msgBody').value = '';
+}
+</script>
+</body>
+</html>
